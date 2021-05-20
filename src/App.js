@@ -1,8 +1,12 @@
 import "./App.css";
-// import Inicio from "./view/inicio";
+import Inicio from "./view/Inicio";
 
 function App() {
-  return <div className="container">{/* <Inicio /> */}</div>;
+  return (
+    <div className="App">
+      <Inicio />
+    </div>
+  );
 }
 
 export default App;
