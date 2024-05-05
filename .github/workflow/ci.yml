@@ -1,0 +1,89 @@
+name: Continuos Integration
+run-name: Proccess Git Push Request
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+
+jobs:
+  Continuos-Integration:
+    runs-on: windows-latest
+    environment:
+      name: Desenvolvimento
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Install Dependencies
+        id: install-dependencies
+        run: npm ci
+
+      - name: Execute tests
+        id: test
+        run: npm run testes
+
+      - name: Execute build
+        id: build
+        run: npm run start
+
+      - name: Build project
+        run: |
+          Compress-Archive -Path . -DestinationPath site.zip
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body: |
+            Release de ${{ github.ref_name }}
+            - Testes: ${{ steps.test.outcome }}
+            - Build: ${{ steps.build.outcome }}
+
+      - name: Anexar Artefato ao Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./site.zip
+          asset_name: site-v${{  github.run_number }}.zip
+          asset_content_type: application/zip
+
+      - name: Send Notification on Failure
+        if: ${{ failure() }}
+        uses: hilarion5/send-mail@v1
+        with:
+          smtp-server: smtp.gmail.com
+          smtp-port: 465
+          smtp-secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: CI/CD Pipeline Failure - ${{ github.repository }} - ${{ github.run_id }}
+          to-email: julio_soares_mendes@hotmail.com
+          from-email: ${{ secrets.MAIL_USERNAME }}
+          body: |
+            Olá,
+
+               Ocorreu uma falha no pipeline de CI/CD do repositório ${{ github.repository }}.
+
+               Aqui estão alguns detalhes:
+
+               - ID da execução: ${{ github.run_id }}
+               - Ref do commit: ${{ github.ref }}
+               - SHA do commit: ${{ github.sha }}
+
+               Você pode visualizar mais detalhes sobre a falha acessando o log do pipeline: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+               Por favor, verifique o problema assim que possível.
+
+               Atenciosamente,
+               Julio Mendes

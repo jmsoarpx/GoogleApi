@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "craco start",
+    "test": "craco test --env=jsdom --passWithNoTests",
     "build": "craco build"
   },
   "dependencies": {
