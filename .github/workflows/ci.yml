@@ -33,7 +33,7 @@ jobs:
 
       - name: Build project
         run: |
-          Compress-Archive -Path . -DestinationPath site.zip
+          zip -r site.zip .
 
       - name: Create Release
         id: create_release
