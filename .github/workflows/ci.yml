@@ -65,6 +65,7 @@ jobs:
           smtp-server: smtp.gmail.com
           smtp-port: 465
           smtp-secure: true
+          smtp-security: ssl
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: CI/CD Pipeline Failure - ${{ github.repository }} - ${{ github.run_id }}
