@@ -19,6 +19,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16.x
+
+      - name: remove node_modules
+        run: rm -rf node_modules
+
       - name: Install Dependencies
         id: install-dependencies
         run: yarn install
