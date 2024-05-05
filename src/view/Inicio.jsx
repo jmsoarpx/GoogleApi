@@ -46,7 +46,7 @@ export default () => {
         </div>
       </div>
       <Cards result={result} />
-      {totalItens > 0 && <Pagination changePage={setPage} totalRecords={totalItens} />}
+      {totalItens >= 1 && <Pagination changePage={setPage} totalRecords={totalItens} />}
     </>
   );
 };
