@@ -1,0 +1,1 @@
+[![Diagrama Draw.io](https://raw.githubusercontent.com/JulioSoaresMendes/exemplo-drawio-github/master/docs/diagrama.drawio)](https://raw.githubusercontent.com/JulioSoaresMendes/exemplo-drawio-github/master/docs/diagrama.drawio)
