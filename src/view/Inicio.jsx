@@ -42,15 +42,11 @@ export default () => {
           onChange={handlekeyup}
         />
         <div className="m-5 flex-grow-0">
-          <Button
-            text="Procurar"
-            className="rounded border border-blue-700 p-2 m-0 bg-blue-700 text-gray-50"
-            click={serachBooks}
-          />
+          <Button text="Procurar" className="rounded border border-blue-700 p-2 m-0 bg-blue-700 text-gray-50" click={serachBooks} />
         </div>
       </div>
       <Cards result={result} />
-      <Pagination changePage={setPage} totalRecords={totalItens} />
+      {totalItens > 0 && <Pagination changePage={setPage} totalRecords={totalItens} />}
     </>
   );
 };
